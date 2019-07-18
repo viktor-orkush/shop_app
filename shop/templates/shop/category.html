@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.descriptions|truncatechars:155 }}
+    {% else %}
+        Welcome to cushion store where you can buy confy and awesome cushions.
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} - Perfect Cushion Store
+    {% else %}
+        See Our Cushion Collection - Perfect Cushion Store
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if category %}
+        <div>
+            <div>
+                <p><a href="{% url 'shop:allProdCat' %}">Our Product Collection</a> | {{ category.name }}</p>
+            </div>
+        </div>
+    {% endif %}
+    <div>
+        {% if category %}
+            <img src="{{ category.image.url }}" alt="Our Products Collection"
+    </div>
+        {% else %}
+            <img src="{% static 'media/img/banner.jpg' %}" alt="Our Products Collection">
+    </div>
+    <br>
+    <div>
+        <h1>Our Products Collection</h1>
+        <p>Finding the perfect cushion for your room</p>
+    </div>
+    {% endif %}
+    <div>
+        <div>
+            {% for product in products %}
+            <div>
+                <div>
+                    <a href="{{ product.get_url }}"><img src="{{ product.image.url }}" alt=""{{ product.name }}></a>
+                    <div>
+                        <h4>{{ product.name }}</h4>
+                        <p>{{ product.price }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
