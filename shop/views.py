@@ -2,9 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 
+
 def index(request):
     text_var = "this is my first django app web page"
     return HttpResponse(text_var)
+
 
 def allProdCat(request, c_slug=None):
     c_page = None
@@ -16,7 +18,8 @@ def allProdCat(request, c_slug=None):
         products = Product.objects.all().filter(available=True)
     return render(request,'shop/category.html', {'category':c_page, 'products':products})
 
-def ProdCatDetail(request, c_slug, product_slug):
+
+def prodCatDetail(request, c_slug, product_slug):
     try:
         product = Product.objects.get(category__slug=c_slug, slug=product_slug)
     except Exception as e:
