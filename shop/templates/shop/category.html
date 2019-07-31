@@ -18,7 +18,7 @@
     {% if category %}
         <div class="row my_row_class">
             <div class="mx-auto">
-                <p><a href="{% url 'shop:allProdCat' %}">Our Product Collection</a> | {{ category.name }}</p>
+                <p><a href="{% url 'shop:all_prod_cat' %}">Our Product Collection</a> | {{ category.name }}</p>
             </div>
         </div>
     {% endif %}
@@ -32,7 +32,7 @@
                 <p class="text-justify">{{ category.description }}</p>
             </div>
         {% else %}
-            <img class="my_image my_image_padding"src="{% static 'media/img/banner.jpg' %}" alt="Our Products Collection" width="100%" height="auto">
+            <img class="my_image my_image_padding"src="{% static 'media/img/banner.jpg' %}" alt="Our Products Collection">
     </div>
     <br>
     <div>
@@ -44,7 +44,7 @@
         <div class="row mx-auto">
             {% for product in products %}
             <div class="my_bottom_margin col-9 col-sm-12 col-md-6 col-lg-4">
-                <div class="card" style="width: 18rem;">
+                <div class="card">
                     <a href="{{ product.get_url }}"><img class="card-img-top my_image" src="{{ product.image.url }}" alt=""{{ product.name }}></a>
                     <div class="card-body">
                         <h4>{{ product.name }}</h4>

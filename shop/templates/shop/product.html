@@ -4,31 +4,31 @@
   {{ product.description|truncatewords:155 }}
 {% endblock %}
 {% block title %}
-    {{ product.name }} - Perfext Cushion Store
+    {{ product.name }} - Perfect Cushion Store
 {% endblock %}
 {% block content %}
-    <div>
-        <div>
-            <p><a href="{% url 'shop:allProduct' %}">Home</a> | <a href="{{ product.category.get_url }}">{{ product.category }}</a> | {{ product.name }}  </p>
+    <div class="row my_prod_row_class">
+        <div class="mx-auto">
+            <p><a href="{% url 'shop:all_prod_cat' %}">Home</a> | <a href="{{ product.category.get_url }}">{{ product.category }}</a> | {{ product.name }}  </p>
         </div>
-        <div>
+        <div class="container">
             <br>
-            <div>
-                <div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
                     <div>
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <img class="my_image" src="{{ product.image.url }}" alt="{{ product.name }}">
                     </div>
                 </div>
-                <div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                     <div>
-                        <h3>{{ product.name }}</h3>
+                        <h1 class="my_prod_title">{{ product.name }}</h1>
                         <p>${{ product.price }}</p>
-                        <p>Product Description</p>
-                        <p>{{ product.description }}</p>
+                        <p class="my_title">Product Description</p>
+                        <p class="text-justify my_prod_text">{{ product.description }}</p>
                         {% if product.stock <= 0 %}
-                            <p><b>Out of Stock</b></p>
+                            <p class="text-justify my_prod_text"><b>Out of Stock</b></p>
                         {% else %}
-                            <a href="">Add to Cart</a>
+                            <a class="btn btn-secondary" href="">Add to Cart</a>
                         {% endif %}
                     </div>
                 </div>
