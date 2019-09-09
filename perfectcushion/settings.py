@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'shop',
     'search_app',
     'cart',
+    'stripe',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,6 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+
+STRIPE_PUBLISH_KEY = 'pk_test_aEpjy7jXYPCbj4ooTa1BOTW0005TzWinBQ'
+STRIPE_SECRET_KEY = 'sk_test_YFqCiusAYuHgcD1n5xu6Mk4500fXQk5RcT'

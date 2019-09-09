@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cart, CartItem
 from shop.models import Product
+import stripe
+from django.conf import settings
 
 
 # def _cart_id(request):
@@ -70,4 +72,25 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
             counter += cart_item.quantity
     except ObjectDoesNotExist:
         pass
-    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter))
+
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    stripe_total = int(total * 100)
+    description = 'Perfect Cushion Shop - New Order'
+    data_key = settings.STRIPE_PUBLISH_KEY
+    if request.method == 'POST':
+        # print(request.POST)
+        try:
+            token = request.POST['stripeToken']
+            email = request.POST['stripeEmail']
+            customer = stripe.Customer.create(
+                email=email,
+                source=token
+            )
+            charge = stripe.Charge.create(
+                amount=stripe_total,
+                curency='usd',
+                description=customer.id
+            )
+        except stripe.error.CardError as e:
+            return False,e
+    return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter, stripe_total=stripe_total, description=description, data_key=data_key))
