@@ -8,7 +8,8 @@ from .models import Cart, CartItem
 from shop.models import Product
 import stripe
 from django.conf import settings
-
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
 
 # def _cart_id(request):
 #     cart = request.session_key
@@ -137,6 +138,13 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
                     order_item.delete()
                     '''The terminal print this message when the order is saved'''
                     print('The order has been created')
+                # todo setting domain dns for send email to customer with sending information of order *** mailgun.com
+                # try:
+                #     '''Calling the sendEmail function'''
+                #     sendEmail(order_details.id)
+                #     print('The order email send to the customer.')
+                # except IOError as e:
+                #     return e
                 return redirect('order:thanks', order_details.id)
             except ObjectDoesNotExist:
                 print("Error - " + ObjectDoesNotExist)
@@ -144,3 +152,22 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
             print("Error" + e)
             return False, e
     return render(request, 'cart.html', dict(cart_items=cart_items, total=total, counter=counter, stripe_total=stripe_total, description=description, data_key=data_key))
+
+
+def sendEmail(order_id):
+    transaction = Order.objects.get(id=order_id)
+    order_item = Order.objects.filter(order=transaction)
+    try:
+        subject = "Perfect Cushion Store - New Order #{}".format(transaction.id)
+        to = ['{}'.format(transaction.emailAddress)]
+        from_email = "order@perfectcushionstore.com"
+        order_information ={
+            "transaction": transaction,
+            'order_items': order_item
+        }
+        message = get_template('email/email.html').render(order_information)
+        msg = EmailMessage(subject, message, to=to, from_email=from_email)
+        msg.content_subtype = 'html'
+        msg.send()
+    except IOError as e:
+        return e
